@@ -42,6 +42,38 @@ def test_post_assignment_student_1(client, h_student_1):
     assert data['teacher_id'] is None
 
 
+# def test_post_assignment_student_2(client, h_student_2):
+#     content = 'ABCD TESTPOST 2'
+
+#     response = client.post(
+#         '/student/assignments',
+#         headers=h_student_2,
+#         json={
+#             'content': content
+#         })
+
+#     assert response.status_code == 200
+
+#     data = response.json['data']
+#     assert data['content'] == content
+#     assert data['state'] == 'DRAFT'
+#     assert data['teacher_id'] is None
+
+def test_without_header(client, h_student_2):
+    content = 'ABCD TESTPOST 2'
+
+    response = client.post(
+        '/student/assignments',
+        headers=None,
+        json={
+            'content': content
+        })
+
+    assert response.status_code == 401
+
+    
+
+
 def test_submit_assignment_student_1(client, h_student_1):
     response = client.post(
         '/student/assignments/submit',
@@ -57,6 +89,23 @@ def test_submit_assignment_student_1(client, h_student_1):
     assert data['student_id'] == 1
     assert data['state'] == 'SUBMITTED'
     assert data['teacher_id'] == 2
+
+
+# def test_submit_assignment_student_2(client, h_student_2):
+#     response = client.post(
+#         '/student/assignments/submit',
+#         headers=h_student_2,
+#         json={
+#             'id': 3,
+#             'teacher_id': 2
+#         })
+
+#     assert response.status_code == 200
+
+#     data = response.json['data']
+#     assert data['student_id'] == 2
+#     assert data['state'] == 'SUBMITTED'
+#     assert data['teacher_id'] == 2
 
 
 def test_assingment_resubmitt_error(client, h_student_1):
